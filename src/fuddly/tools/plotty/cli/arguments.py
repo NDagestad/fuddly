@@ -1,3 +1,4 @@
+# PYTHON_ARGCOMPLETE_OK
 from fuddly.tools.plotty.Formula import Formula
 from fuddly.tools.plotty.PlottyDatabase import PlottyDatabase
 from fuddly.tools.plotty.cli.parse.range import parse_int_range_union
@@ -12,6 +13,8 @@ import argparse
 
 __parser = argparse.ArgumentParser(description='Arguments for Plotty')
 
+import argcomplete
+argcomplete.autocomplete(__parser)
 
 def setup_parser():
 

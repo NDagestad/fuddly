@@ -25,6 +25,8 @@ import unittest
 
 from fuddly.test import args
 import fuddly.test.unit, fuddly.test.integration
+import argparse
+import argcomplete
 
 if len(args) == 2 and args[1] == "fuddly.test":
     del args[1]
@@ -33,6 +35,6 @@ if len(args) == 1:
     args.append('fuddly.test.unit')
     args.append('fuddly.test.integration')
 
+argcomplete.autocomplete(parser)
+args = parser.parse_args()
 unittest.main(verbosity=2, argv=args, defaultTest=None, exit=False)
-
-

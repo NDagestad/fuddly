@@ -34,6 +34,7 @@ from fuddly.libs.external_modules import *
 from fuddly.framework.plumbing import *
 
 import argparse
+import argcomplete
 
 parser = argparse.ArgumentParser(description='Arguments for FmkDB toolkit script')
 
@@ -133,6 +134,8 @@ group.add_argument('--disprove-impact', nargs=2, metavar=('FIRST_ID', 'LAST_ID')
                    help='''Disprove the impact of a group of data present in the outcomes of 
                    '--data-with-impact-raw'. The group is determined by providing the smaller data ID 
                    (FIRST_ID) and the bigger data ID (LAST_ID).''')
+
+argcomplete.autocomplete(parser)
 
 def handle_confirmation():
     try:

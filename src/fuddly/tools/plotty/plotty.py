@@ -21,6 +21,7 @@ from fuddly.tools.plotty.utils import print_error, print_warning
 x_type = None
 y_type = None
 
+
 def get_points(
         database: PlottyDatabase,
         table_name: str,
