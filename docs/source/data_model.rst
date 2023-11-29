@@ -1841,6 +1841,7 @@ To perform that operation you can write the following python code:
    raw_data = b'Plop\x8c\xd6/\x06x\x9cc\raHe(f(aPd\x00\x00\x0bv\x01\xc7Blue'
 
    fmk = FmkPlumbing()
+   fmk.start()
    fmk.run_project(name="tuto")
    enc_dm = fmk.dm.get_atom('enc')
 

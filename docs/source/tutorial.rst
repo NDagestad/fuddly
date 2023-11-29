@@ -1626,6 +1626,7 @@ match the imaginary TestNode data model we just described in section
    from fuddly.framework.plumbing import *
 
    fmk = FmkPlumbing()
+   fmk.start()
 
    fmk.run_project(name="tuto")
 

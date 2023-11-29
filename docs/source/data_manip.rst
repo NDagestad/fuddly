@@ -442,6 +442,7 @@ it if you like ;).
     from fuddly.framework.plumbing import *
 
     fmk = FmkPlumbing()
+    fmk.start()
     fmk.run_project(name='tuto')
 
     usb_str = fmk.dm.get_external_atom(dm_name='usb', data_id='STR')
