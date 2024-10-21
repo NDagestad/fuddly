@@ -60,15 +60,15 @@ projects_folder = app_folder + os.sep + 'projects' + os.sep
 data_models_folder = app_folder + os.sep + 'data_models' + os.sep
 
 fuddly_data_folder = os.path.expanduser('~' + os.sep + 'fuddly_data' + os.sep)
+config_folder = os.path.join(fuddly_data_folder, 'config') + os.sep
 if not xdg_mod_error and not os.path.exists(fuddly_data_folder):
-    use_xdg = True
     fuddly_data_folder = xdg_data_home + os.sep + 'fuddly' + os.sep
     if not os.path.exists(fuddly_data_folder):
         new_fuddly_data_folder = True
-else:
-    use_xdg = False
+    config_folder = xdg_config_home + os.sep + 'fuddly' + os.sep
 
 ensure_dir(fuddly_data_folder)
+ensure_dir(config_folder)
 
 exported_data_folder = fuddly_data_folder + 'exported_data' + os.sep
 ensure_dir(exported_data_folder)
@@ -82,14 +82,6 @@ external_libs_folder = fuddly_data_folder + 'external_libs' + os.sep
 ensure_dir(external_libs_folder)
 external_tools_folder = fuddly_data_folder + 'external_tools' + os.sep
 ensure_dir(external_tools_folder)
-
-if not use_xdg:
-    config_folder = os.path.join(fuddly_data_folder, 'config') + os.sep
-else:
-    xdg_fuddly_config_folder = xdg_config_home + os.sep + 'fuddly' + os.sep
-    config_folder = xdg_fuddly_config_folder
-ensure_dir(config_folder)
-
 user_projects_folder = fuddly_data_folder + 'user_projects' + os.sep
 ensure_dir(user_projects_folder)
 user_data_models_folder = fuddly_data_folder + 'user_data_models' + os.sep
