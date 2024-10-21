@@ -1,3 +1,4 @@
+#PYTHON_ARGCOMPLETE_OK
 ################################################################################
 #
 #  Copyright 2014-2016 Eric Lacombe <eric.lacombe@security-labs.org>
@@ -25,6 +26,8 @@ import sys
 import os
 import fuddly.cli.argparse_wrapper as argparse
 import importlib
+
+import argcomplete 
 
 from typing import List
 from fuddly.cli import * 
@@ -161,6 +164,7 @@ def main(argv: List[str] = None):
 
     # Needed because we set exit_on_error=False in the constructor
     try:
+        argcomplete.autocomplete(arg_parser)
         args = arg_parser.parse_args(args=argv)
     except argparse.ArgumentError as e:
         print(e.message) 
