@@ -95,16 +95,13 @@ def main(argv: List[str] = None):
             nargs="?",
             help="Name of the script to launch",
             metavar="script",
-        ).completer=ChoicesCompleter(get_scripts())
-
-        # TODO add arg completion for scripts
+        ).completer = ChoicesCompleter(get_scripts()) # Gets the files in the folder <scriptdir>
         p.add_argument(
             "args",
             action="append",
             nargs=argparse.REMAINDER,
             help="Arguments to pass through to the script",
         ).completer = SuppressCompleter() #script_argument_completer
-
 
 
     with subparsers.add_parser("new", help="Create a new project or data model") as p:
