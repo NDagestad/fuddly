@@ -28,7 +28,7 @@ import fuddly.cli.argparse_wrapper as argparse
 import importlib
 
 import argcomplete 
-from argcomplete.completers import ChoicesCompleter
+from argcomplete.completers import ChoicesCompleter, SuppressCompleter
 
 from typing import List
 from fuddly.cli import * 
@@ -79,59 +79,32 @@ def main(argv: List[str] = None):
             help="Limit the information displayed at startup.",
         )
 
-    
-    def get_scripts() -> list():
-        paths = []
-
-        import fuddly.framework.global_resources as gr
-        script_dir = os.path.join(gr.fuddly_data_folder, "projects_scripts")
-        if os.path.isdir(script_dir):
-            path, _, files = next(os.walk(script_dir))
-            for f in files:
-                paths.append("fuddly.project_scripts." + f.removesuffix(".py"))
-        
-        from importlib.metadata import entry_points
-        import pkgutil
-
-        for ep in entry_points(group=gr.ep_group_names["projects"]):
-            p = pkgutil.get_loader(ep.module).path
-            if os.path.basename(p) == "__init__.py":
-                p=os.path.dirname(p)
-            else:
-                # Ignoring old single-files projects
-                continue
-            if os.path.isdir(os.path.join(p, "scripts")):
-                for f in next(os.walk(os.path.join(p, "scripts")))[2]:
-                    if f.endswith(".py")  and f != "__init__.py":
-                        paths.append(ep.module + ".script." + f.removesuffix(".py"))
-        
-        return paths
-        
     with subparsers.add_parser("run", help="Run a fuddly project script") as p:
+        from .run import get_scripts, script_argument_completer
         # XXX Should you be able to run script from outside the script dir(s?) ?
         parsers["run"] = p
-        p.add_argument(
+        group = p.add_argument_group()
+        group.add_argument(
             "--list",
             action="store_true",
             help="list all available scripts",
-        )
+        ) 
 
-        p.add_argument(
+        group.add_argument(
             "script",
-            nargs=1,
+            nargs="?",
             help="Name of the script to launch",
             metavar="script",
-        ).completer = ChoicesCompleter(get_scripts()) # Gets the files in the folder <scriptdir>
+        ).completer=ChoicesCompleter(get_scripts())
 
-        # TODO add completers for the script arguments
+        # TODO add arg completion for scripts
         p.add_argument(
             "args",
             action="append",
             nargs=argparse.REMAINDER,
             help="Arguments to pass through to the script",
-            metavar="...",
-            #choices=(),
-        ) #.completer = ScriptArgsCompleter
+        ).completer = SuppressCompleter() #script_argument_completer
+
 
 
     with subparsers.add_parser("new", help="Create a new project or data model") as p:
