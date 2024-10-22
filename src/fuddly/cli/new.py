@@ -18,31 +18,13 @@ conf = {}
 conf["dm"] = {
     "dm": {
         "name": "dm.py",
-        "content": """from fuddly.framework.data_model import *
-from fuddly.framework.global_resources import *
-from fuddly.framework.value_types import *
-
-class {name}_DataModel(DataModel):
-
-    name = "{name}"
-
-    def build_data_model(self):
-        # Add your model definition here
-        # See https://fuddly.readthedocs.io/en/develop/data_model.html
-        # and https://fuddly.readthedocs.io/en/develop/tutorial.html#a-first-example
-        # For information on how to do that
-        raise NotImplementedError()
-
-data_model = {name}_DataModel()""",
+        "interpolate": ["name"],
     },
     "strategy": {
         "name": "strategy.py",
-        "content": """from fuddly.framework.tactics_helpers import *
-tactics = Tactics()""",
     },
     "init": {
         "name": "__init__.py",
-        "content": "from . import (dm, strategy)"
     },
 }
 
@@ -53,36 +35,11 @@ conf["project"] = {}
 conf["module"] = {
     "config": {
         "name": "pyproject.toml",
-        "content": """# This is a small configuration file for you {target} module.
-# you can install it using `pip install .`
-
-[project]
-name = "{module_name}"
-version = "0.0.1"
-authors = [
-    {{ name="<YOUR NAME>", email="your@email.here" }},
-]
-description = "Description of your {target}"
-readme = "README.md"
-dependencies=["fuddly"] # Add your dependencies here
-
-[project.urls]
-"Homepage" = "https://home-page-or-source-repo/url"
-"Bug Tracker" = "https://bug-tracker/url"
-"Documentation" = "https://documentation/url"
-
-# This is what will link your {target} to fuddly.
-# Without this entry, fuddly won't be able to automagically 
-# discover your {target}.
-[project.entry-points."fuddly.{target}s"]
-{name} = "{module_name}"
-""",
+        "interpolate": ["name", "target", "module_name"], 
     },
     "readme": {
         "name": "README.md",
-        "content": """# {name}
-
-Here you can add some more info about your {target}""",
+        "interpolate": ["name", "target"],
     },
 }
 
@@ -137,6 +94,7 @@ def _create_conf(args: argparse.Namespace, path: Path, conf: dict):
 
     for e in conf.values():
         f = path.joinpath(e["name"])
+        # TODO copy files and interpolate the variables
         f.touch()
         f.write_text(
             e["content"].format(
